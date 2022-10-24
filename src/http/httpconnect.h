@@ -1,7 +1,7 @@
 #ifndef HTTP_CONNECT_H
 #define HTTP_CONNECT_H
 
-#include "buffer.h"
+#include "buffer/buffer.h"
 
 class HttpConnect {
 public:

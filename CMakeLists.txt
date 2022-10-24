@@ -4,8 +4,19 @@ project(server)
 set(CMAKE_CXX_STANDARD 17)              # Compile as C++17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)     # Require C++17 support
 
-include_directories(${PROJECT_SOURCE_DIR}/src)
+# output directory
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-add_executable(server src/main.cpp src/buffer.cpp)
+# include directory
+set(SERVER_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
+set(SERVER_TEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test)
+include_directories(${SERVER_SRC_INCLUDE_DIR} ${SERVER_TEST_INCLUDE_DIR})
 
-target_link_libraries(server -pthread)
+add_subdirectory(src)
+add_subdirectory(test)
+
+# 
+# add_executable(server src/main.cpp src/buffer.cpp)
+# target_link_libraries(server -pthread)
