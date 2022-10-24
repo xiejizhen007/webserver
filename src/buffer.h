@@ -30,7 +30,10 @@ public:
 
     std::string ReadableBytesToString();
     std::string UsedBytesToString();
-    std::string bufToString();
+    std::string BufToString();
+
+    const char *ReadPtr() const;
+    const char *WritePtr() const;
 private:
     /**
      * 缓冲区类似于窗口

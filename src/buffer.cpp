@@ -61,7 +61,7 @@ ssize_t Buffer::Readfd(int fd, int *err) {
         // buf 刚刚好够装数据
         wptr_ += len;
     } else {
-        // TODO: 数据溢出到 tbuf 了，需要处理
+        // 数据溢出到 tbuf 了，需要处理
         wptr_ = buf_.size();
         Append(tbuf, len - writesz);
     }
@@ -87,8 +87,16 @@ std::string Buffer::UsedBytesToString() {
     return std::string(BeginPtr_(), rptr_);
 }
 
-std::string Buffer::bufToString() {
+std::string Buffer::BufToString() {
     return std::string(buf_.data());
+}
+
+const char * Buffer::ReadPtr() const {
+    return BeginPtr_() + rptr_;
+}
+
+const char * Buffer::WritePtr() const {
+    return BeginPtr_() + wptr_;
 }
 
 char *Buffer::BeginPtr_() {

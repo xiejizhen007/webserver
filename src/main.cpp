@@ -28,16 +28,16 @@ int main() {
     Buffer *buf = new Buffer(static_cast<size_t>(10));
     int *err;
     buf->Readfd(0, err);
-    std::cout << "buf: " << buf->bufToString() << std::endl;
+    std::cout << "buf: " << buf->BufToString() << std::endl;
     std::cout << "readable: " << buf->ReadableBytesToString() << std::endl;
     std::cout << "used: " << buf->UsedBytesToString() << std::endl;
     buf->Writefd(1, err);
-    std::cout << "buf: " << buf->bufToString() << std::endl;
+    std::cout << "buf: " << buf->BufToString() << std::endl;
     std::cout << "readable: " << buf->ReadableBytesToString() << std::endl;
     std::cout << "used: " << buf->UsedBytesToString() << std::endl;
     std::string str = "hello,world";
     buf->Append(str);
-    std::cout << "buf: " << buf->bufToString() << std::endl;
+    std::cout << "buf: " << buf->BufToString() << std::endl;
     std::cout << "readable: " << buf->ReadableBytesToString() << std::endl;
     std::cout << "used: " << buf->UsedBytesToString() << std::endl;
 }

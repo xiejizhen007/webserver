@@ -4,6 +4,7 @@
 #include <thread>
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
 
 int main() {
     std::atomic<int> x(0);
@@ -23,4 +24,8 @@ int main() {
     std::this_thread::sleep_for(1000ms);
     
     std::cout << "x: " << x << std::endl;
+    std::condition_variable cond;
+    cond.notify_one();
+    cond.wait()
+    std::unique_lock<std::mutex> lock1();
 }
