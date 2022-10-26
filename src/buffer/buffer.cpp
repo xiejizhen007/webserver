@@ -24,7 +24,11 @@ void Buffer::reset(char c) {
     buf_.assign(buf_.size(), c);
 }
 
-void Buffer::Append(std::string &str) {
+void Buffer::RetrieveUntil(const char *end) {
+    rptr_ += (end - ReadPtr());
+}
+
+void Buffer::Append(const std::string &str) {
     this->Append(str.data(), str.length());
 }
 
@@ -69,6 +73,10 @@ ssize_t Buffer::Readfd(int fd, int *err) {
     return len;
 }
 
+ssize_t Buffer::Readfd(int fd) {
+    return Readfd(fd, nullptr);
+}
+
 // 读取缓冲区的数据，写入到 fd 中
 ssize_t Buffer::Writefd(int fd, int *err) {
     const size_t readsz = ReadableBytes();
@@ -77,6 +85,10 @@ ssize_t Buffer::Writefd(int fd, int *err) {
         rptr_ += len;
     }
     return len;
+}
+
+ssize_t Buffer::Writefd(int fd) {
+    return Writefd(fd, nullptr);
 }
 
 std::string Buffer::ReadableBytesToString() {
@@ -97,6 +109,10 @@ const char * Buffer::ReadPtr() const {
 
 const char * Buffer::WritePtr() const {
     return BeginPtr_() + wptr_;
+}
+
+size_t Buffer::buffsz() const {
+    return buf_.size();
 }
 
 char *Buffer::BeginPtr_() {

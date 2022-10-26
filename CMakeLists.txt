@@ -17,6 +17,9 @@ include_directories(${SERVER_SRC_INCLUDE_DIR} ${SERVER_TEST_INCLUDE_DIR})
 add_subdirectory(src)
 add_subdirectory(test)
 
+file(GLOB_RECURSE REMOVE_TARGET ${CMAKE_BINARY_DIR}/*)
+add_custom_target(clean-all COMMAND ${CMAKE_COMMAND} -E remove ${REMOVE_TARGET})
+
 # 
 # add_executable(server src/main.cpp src/buffer.cpp)
 # target_link_libraries(server -pthread)

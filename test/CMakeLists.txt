@@ -15,12 +15,12 @@ foreach (server_test_source ${SERVER_TEST_SOURCES})
     # target_link_libraries(${server_test_name} server_shared gtest gmock_main)
     target_link_libraries(${server_test_name} server_shared)
 
-    # # Set test target properties and dependencies.
-    # set_target_properties(${server_test_name}
-    #     PROPERTIES
-    #     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test"
-    #     COMMAND ${server_test_name}
-    # )
+    # Set test target properties and dependencies.
+    set_target_properties(${server_test_name}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test"
+        COMMAND ${server_test_name}
+    )
 
     # # Add the test under CTest.
     # add_test(${server_test_name} ${VALGRIND_BIN} ${VALGRIND_OPTIONS}

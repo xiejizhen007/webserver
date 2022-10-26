@@ -2,7 +2,7 @@
 #include <string>
 #include <regex>
 
-#include "httprequest.h"
+#include "http/httprequest.h"
 
 void HttpRequest::init() {
     method_ = path_ = version_ = body_ = std::string("");
@@ -24,7 +24,9 @@ bool HttpRequest::parse(Buffer &buff) {
 
         switch (state_) {
             case STATE::RELINE:
-                ParseRequestLine(line);
+                if (!ParseRequestLine(line)) {
+                    return false;
+                }
                 break;
             case STATE::HEAD:
                 ParseHead(line);
@@ -35,7 +37,40 @@ bool HttpRequest::parse(Buffer &buff) {
             default:
                 break;
         }
+
+        if (end == buff.WritePtr()) {
+            break;
+        }
+        // 修改读指针
+        buff.RetrieveUntil(end + 2);
     }
+
+    return true;
+}
+
+bool HttpRequest::IsKeepAlive() const {
+    auto iter = head_.find("Connection");
+    return iter != head_.end() && iter->second == "keep-alive";
+}
+
+std::string HttpRequest::method() const {
+    return method_;
+}
+
+std::string HttpRequest::path() const {
+    return path_;
+}
+
+std::string HttpRequest::version() const {
+    return version_;
+}
+
+std::string HttpRequest::body() const {
+    return body_;
+}
+
+std::unordered_map<std::string, std::string> HttpRequest::head() const {
+    return head_;
 }
 
 bool HttpRequest::ParseRequestLine(const std::string &line) {

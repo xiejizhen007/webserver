@@ -25,6 +25,14 @@ public:
     // 对报文进行解析
     bool parse(Buffer &buff);
 
+    bool IsKeepAlive() const;
+
+    std::string method() const;
+    std::string path() const;
+    std::string version() const;
+    std::string body() const;
+    std::unordered_map<std::string, std::string> head() const;
+
 private:
     STATE state_;
     std::string method_;

@@ -1,11 +1,15 @@
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <fcntl.h>      // open
 #include <iostream>
 
-#include "server.h"
+#include "buffer/buffer.h"
+#include "http/httpresponse.h"
+#include "server/server.h"
 
 Server::Server(int port): port_(port) {}
 
@@ -29,6 +33,7 @@ void Server::SimpleWork() {
 
     cout << "pid: " << getpid() << endl;
     cout << "port: " << addr.sin_port << endl;
+    cout << "port: " << port_ << endl;
     cout << "ip: " << std::hex << addr.sin_addr.s_addr << endl;
 
     if (bind(listenfd_, (sockaddr *)&addr, sizeof(addr)) < 0) {
@@ -44,14 +49,28 @@ void Server::SimpleWork() {
     cout << "开始监听" << endl;
     int comfd = -1;
 
+    // int filefd = open("http.txt", O_CREAT | O_RDWR);
+    // if (filefd < 0) {
+    //     cout << "filefd < 0" << endl;
+    //     cout << errno << endl;
+    // }
+
     while ((comfd = accept(listenfd_, nullptr, nullptr)) >= 0) {
         cout << "connect" << endl;
-        char buf;
+        // char buf;
 
-        while ((read(comfd, &buf, 1)) != -1) {
-            cout << buf;
-        }
+        // while ((read(comfd, &buf, 1)) > 0) {
+        //     cout << buf;
+        //     write(filefd, &buf, 1);
+        // }
         
+        // close(filefd);
+        // close(comfd);
+        Buffer buf(1024);
+        HttpResponse http;
+        http.Response(buf);
+        buf.Writefd(comfd);
+
         close(comfd);
     }
 }
