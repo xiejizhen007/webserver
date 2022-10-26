@@ -2,6 +2,7 @@
 #define HTTP_REQUEST_H
 
 #include <string>
+#include <unordered_set>
 #include <unordered_map>
 
 #include "buffer/buffer.h"
@@ -43,8 +44,11 @@ private:
     std::unordered_map<std::string, std::string> head_;
 
     bool ParseRequestLine(const std::string &line);
+    bool ParsePath();
     bool ParseHead(const std::string &line);
     bool ParseBody(const std::string &line);
+
+    static const std::unordered_set<std::string> DEFAULT_HTML;
 };
 
 #endif

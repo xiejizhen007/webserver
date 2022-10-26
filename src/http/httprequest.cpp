@@ -1,8 +1,14 @@
 #include <algorithm>
 #include <string>
 #include <regex>
+#include <unordered_set>
+#include <unordered_map>
 
 #include "http/httprequest.h"
+
+const std::unordered_set<std::string> HttpRequest::DEFAULT_HTML {
+    "/index",
+};
 
 void HttpRequest::init() {
     method_ = path_ = version_ = body_ = std::string("");
@@ -24,7 +30,7 @@ bool HttpRequest::parse(Buffer &buff) {
 
         switch (state_) {
             case STATE::RELINE:
-                if (!ParseRequestLine(line)) {
+                if (!ParseRequestLine(line) || !ParsePath()) {
                     return false;
                 }
                 break;
@@ -84,6 +90,18 @@ bool HttpRequest::ParseRequestLine(const std::string &line) {
         return true;
     }
     return false;
+}
+
+bool HttpRequest::ParsePath() {
+    if (path_.empty()) {
+        return false;
+    } else if (path_ == "/") {
+        path_ = "/index.html";
+    } else {
+        // 处理路径不是 "/" 的情况
+    }
+
+    return true;
 }
 
 bool HttpRequest::ParseHead(const std::string &line) {

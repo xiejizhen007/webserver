@@ -6,9 +6,11 @@
 #include <unistd.h>
 #include <fcntl.h>      // open
 #include <iostream>
+#include <string>
 
 #include "buffer/buffer.h"
 #include "http/httpresponse.h"
+#include "http/httpconnect.h"
 #include "server/server.h"
 
 Server::Server(int port): port_(port) {}
@@ -55,22 +57,39 @@ void Server::SimpleWork() {
     //     cout << errno << endl;
     // }
 
+    // string body;
+    // string message = "null";
+    // body += "<html><title>Error</title>";
+    // body += "<body bgcolor=\"ffffff\">";
+    // body += to_string(200) + " : " + "ok"  + "\n";
+    // body += "<p>" + message + "</p>";
+    // body += "<hr><em>TinyWebServer</em></body></html>";
+
+    // string html = "HTTP/1.1 200 OK\r\n";
+    // html += "Content-type: text/html\r\n";
+    // html += "Content-length: " + std::to_string(body.size()) + "\r\n\r\n";
+    // html += body + "\r\n";
+
     while ((comfd = accept(listenfd_, nullptr, nullptr)) >= 0) {
         cout << "connect" << endl;
         // char buf;
 
         // while ((read(comfd, &buf, 1)) > 0) {
         //     cout << buf;
-        //     write(filefd, &buf, 1);
+        //     // write(filefd, &buf, 1);
         // }
         
-        // close(filefd);
+        // // close(filefd);
         // close(comfd);
-        Buffer buf(1024);
-        HttpResponse http;
-        http.Response(buf);
-        buf.Writefd(comfd);
+        // // Buffer buf(1024);
+        // // HttpResponse http;
+        // // http.Response(buf);
+        // // buf.Writefd(comfd);
 
-        close(comfd);
+        // // close(comfd);
+        HttpConnect conn;
+        conn.init(comfd, addr);
+        cout << "process: " << conn.Process() << endl;
+        // write(comfd, html.data(), html.size());
     }
 }

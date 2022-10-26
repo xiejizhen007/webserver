@@ -14,6 +14,7 @@ public:
     ~HttpConnect();
 
     void init(int fd, const sockaddr_in &addr);
+    bool Process();
 private:
     int fd_;
     sockaddr_in addr_;

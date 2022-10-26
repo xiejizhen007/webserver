@@ -22,3 +22,19 @@ Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,zh-HK;q=0.7
 Cookie: Idea-68991f12=876bc089-96aa-4c6a-8543-3a6146287ff9
 ```
+
+## 服务端相应相应示例
+
+```http
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-length: 10
+
+1234567890
+
+HTTP/1.1 code status\r\n
+header setting\r\n
+header setting\r\n
+header setting\r\n\r\n
+body text\r\n
+```
