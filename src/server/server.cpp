@@ -7,6 +7,7 @@
 #include <fcntl.h>      // open
 #include <iostream>
 #include <string>
+#include <atomic>
 
 #include "buffer/buffer.h"
 #include "http/httpresponse.h"
@@ -70,6 +71,8 @@ void Server::SimpleWork() {
     // html += "Content-length: " + std::to_string(body.size()) + "\r\n\r\n";
     // html += body + "\r\n";
 
+    std::atomic<int> count(0);
+
     while ((comfd = accept(listenfd_, nullptr, nullptr)) >= 0) {
         cout << "connect" << endl;
         // char buf;
@@ -91,5 +94,7 @@ void Server::SimpleWork() {
         conn.init(comfd, addr);
         cout << "process: " << conn.Process() << endl;
         // write(comfd, html.data(), html.size());
+        count++;
+        cout << "user count: " << count << endl;
     }
 }

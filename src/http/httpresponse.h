@@ -23,6 +23,9 @@ private:
     void AddHeader(Buffer &buf);
     void AddContent(Buffer &buf);
 
+    void ErrorRequest();
+    void ErrorContent(Buffer &buf, const std::string &message);
+
     std::string path_;  // 相对路径，类似于 "/index.html"
     std::string src_;   // 资源所处的目录
 
@@ -31,6 +34,7 @@ private:
     int code_;          // 状态码
 
     static const std::unordered_map<int, std::string> CODE_STATUS;
+    static const std::unordered_map<int, std::string> CODE_PATH;
 };
 
 #endif
