@@ -20,8 +20,10 @@ size_t Buffer::UsedBytes() const {
     return rptr_;
 }
 
-void Buffer::reset(char c) {
-    buf_.assign(buf_.size(), c);
+void Buffer::Reset() {
+    buf_.assign(buf_.size(), 0);
+    rptr_ = 0;
+    wptr_ = 0;
 }
 
 void Buffer::RetrieveUntil(const char *end) {
@@ -91,6 +93,10 @@ ssize_t Buffer::Writefd(int fd) {
     return Writefd(fd, nullptr);
 }
 
+void Buffer::HasWritten(size_t n) {
+    wptr_ += n;
+}
+
 std::string Buffer::ReadableBytesToString() {
     return std::string(BeginPtr_() + rptr_, ReadableBytes());
 }
@@ -103,8 +109,16 @@ std::string Buffer::BufToString() {
     return std::string(buf_.data());
 }
 
+char * Buffer::ReadPtr() {
+    return BeginPtr_() + rptr_;
+}
+
 const char * Buffer::ReadPtr() const {
     return BeginPtr_() + rptr_;
+}
+
+char * Buffer::WritePtr() {
+    return BeginPtr_() + wptr_;
 }
 
 const char * Buffer::WritePtr() const {

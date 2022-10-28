@@ -19,7 +19,7 @@ public:
     size_t WritableBytes() const;
     size_t UsedBytes() const;
 
-    void reset(char c = 0);
+    void Reset();
     void RetrieveUntil(const char *end);
 
     void Append(const std::string &str);
@@ -30,12 +30,15 @@ public:
     ssize_t Readfd(int fd);
     ssize_t Writefd(int fd, int *err);
     ssize_t Writefd(int fd);
+    void HasWritten(size_t n);
 
     std::string ReadableBytesToString();
     std::string UsedBytesToString();
     std::string BufToString();
 
+    char *ReadPtr();
     const char *ReadPtr() const;
+    char *WritePtr();
     const char *WritePtr() const;
 
     size_t buffsz() const;

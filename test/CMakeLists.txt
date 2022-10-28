@@ -13,7 +13,7 @@ foreach (server_test_source ${SERVER_TEST_SOURCES})
     # add_dependencies(check-tests ${server_test_name})
 
     # target_link_libraries(${server_test_name} server_shared gtest gmock_main)
-    target_link_libraries(${server_test_name} server_shared)
+    target_link_libraries(${server_test_name} server_shared pthread)
 
     # Set test target properties and dependencies.
     set_target_properties(${server_test_name}
