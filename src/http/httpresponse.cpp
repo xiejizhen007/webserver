@@ -4,10 +4,10 @@
 #include <fcntl.h>      // open
 #include <string>
 #include <unordered_map>
-#include <iostream>
 
 #include "buffer/buffer.h"
 #include "http/httpresponse.h"
+#include "log/log.h"
 
 const std::unordered_map<int, std::string> HttpResponse::CODE_STATUS {
     {200, "OK"},
@@ -49,7 +49,6 @@ void HttpResponse::Response(Buffer &buf) {
 }
 
 void HttpResponse::AddStateLine(Buffer &buf) {
-    std::cout << "code: " << code_ << std::endl;
     code_ = CODE_STATUS.count(code_) ? code_ : 400;
     buf.Append("HTTP/1.1 " + std::to_string(code_) + " " + CODE_STATUS.find(code_)->second + "\r\n");
 }
@@ -63,8 +62,8 @@ void HttpResponse::AddHeader(Buffer &buf) {
 void HttpResponse::AddContent(Buffer &buf) {
     int filefd = open((src_ + path_).data(), O_RDONLY);
     if (filefd < 0) {
-        std::cout << "\nerr: AddContent can't open file\n";
-        ErrorContent(buf, "cant open file" + path_);
+        LOG_WARN("HttpResponse::AddContent can't open file %s", (src_ + path_).data());
+        ErrorContent(buf, "cant open file: " + (src_ + path_));
         return;
     }
 
@@ -75,6 +74,7 @@ void HttpResponse::AddContent(Buffer &buf) {
 
 // 处理 4xx 类错误
 void HttpResponse::ErrorRequest() {
+    // 将路径重定向至 4xx 页面
     auto iter = CODE_PATH.find(code_);
     if (iter != CODE_PATH.end()) {
         path_ = iter->second;

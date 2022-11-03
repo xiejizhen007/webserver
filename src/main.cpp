@@ -2,6 +2,6 @@
 
 int main() {
     Server *server = new Server();
-    server->SimpleWork();
+    server->Work();
     delete server;
 }

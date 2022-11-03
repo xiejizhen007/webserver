@@ -15,6 +15,11 @@ public:
 
     void init(int fd, const sockaddr_in &addr);
     bool Process();
+
+    static void InitSrcDir(const std::string &src) {
+        auto &tmp = const_cast<std::string &>(src_);
+        tmp = src;
+    }
 private:
     int fd_;
     sockaddr_in addr_;
@@ -24,6 +29,8 @@ private:
 
     HttpRequest httprequest_;
     HttpResponse httpresponse_;
+
+    static const std::string src_;
 };
 
 #endif
